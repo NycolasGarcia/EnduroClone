@@ -1,0 +1,141 @@
+'Enduro Clone v0.1
+'Por Nycolas Garcia
+
+'Setar todos os valores padrão para a reinicialização
+Sub ValoresReset
+  'Configurações da tela-------------------------
+  JanelaAltura = (500)
+  JanelaLargura = (JanelaAltura/3*2)
+  GraphicsWindow.CanResize = ("False")
+  Mouse.HideCursor()
+  
+  'Dimensões de Objetos do Jogo------------------
+  SetDay = (Math.GetRandomNumber(2))
+
+  SkyBoxAltura = (JanelaAltura/3)
+  GroundAltura = ((JanelaAltura/3*2))
+
+  RoadX1 = (JanelaLargura/10*1)
+  RoadX2 = (JanelaLargura/2)
+  RoadX3 = (JanelaLargura/10*9)
+  RoadY1 = (JanelaAltura)
+  RoadY2 = (JanelaAltura - GroundAltura)
+  
+  SunMoonRadius = (JanelaLargura/4)
+  
+  CarroLargura = (JanelaLargura/6)
+  CarroAltura = (CarroLargura/3*2)
+  
+  PlayerX = (JanelaLargura - (CarroLargura/2))
+  PlayerY = (JanelaAltura - CarroLargura)
+  
+  NPCX = ((JanelaLargura/2) - (CarroLargura/2))
+  NPCY = (SkyBoxAltura + CarroAltura)
+  RandomNPC = Math.GetRandomNumber(3)
+  NPCSpeed = (6)
+EndSub
+
+'Criar Background usando valores predefinidos
+Sub BackGround
+  'Criar tela
+  GraphicsWindow.Height = (JanelaAltura)
+  GraphicsWindow.Width = (JanelaLargura)
+  GraphicsWindow.Show()
+  GraphicsWindow.Clear()
+  
+  'Criar Fundo-----------------------------------
+  If (SetDay = 1) Then 
+    GraphicsWindow.BrushColor = ("LightBlue")
+  Else
+    GraphicsWindow.BrushColor = ("Black")
+  EndIf
+  SkyBox = (Shapes.AddRectangle(JanelaLargura, SkyBoxAltura))
+  
+  'Criar Grama-----------------------------------
+  GraphicsWindow.BrushColor = ("Green")
+  Ground = (Shapes.AddRectangle(JanelaLargura, GroundAltura))
+  Shapes.Move(Ground, 0, SkyBoxAltura)
+  
+  'Criar Pista-----------------------------------
+  GraphicsWindow.BrushColor = ("Gray")
+  Shapes.AddTriangle(RoadX1, RoadY1, RoadX2, RoadY2, RoadX3, RoadY1)
+  
+  'Criar Sol ou Lua------------------------------
+  If (SetDay = 1) Then 
+    GraphicsWindow.BrushColor = ("Yellow")
+  Else
+    GraphicsWindow.BrushColor = ("LightGray")
+  EndIf
+  SunMoon = (Shapes.AddEllipse(SunMoonRadius, SunMoonRadius))
+  Shapes.Move(SunMoon, (SunMoonRadius /2), (SunMoonRadius /2))
+  
+  'Construtor Carro Player-------------------------
+  CarroCor = (GraphicsWindow.GetRandomColor())
+  GraphicsWindow.BrushColor = (CarroCor)
+  Player = (Shapes.AddRectangle(CarroLargura, CarroAltura))
+  Shapes.Move(Player, PlayerX, PlayerY)
+EndSub
+
+'Criar novo NPC e estabelecer uma rota nova
+Sub SpawnNPC
+  Shapes.Remove(NPC)
+  NPCX = ((JanelaLargura/2) - (CarroLargura/2))
+  NPCY = (SkyBoxAltura + CarroAltura)
+  RandomNPC = Math.GetRandomNumber(3)
+  if RandomNPC = 1 Then
+    Direcao = 1 * 1
+  Else
+    If RandomNPC = 2 Then
+      Direcao = 1 * -1
+    Else
+      If RandomNPC = 3 Then
+        Direcao = 1 * 0
+      EndIf
+    EndIf
+  EndIf
+  CarroCor = (GraphicsWindow.GetRandomColor())
+  GraphicsWindow.BrushColor = (CarroCor)
+  NPC = (Shapes.AddRectangle(CarroLargura, CarroAltura))
+  Shapes.Move(NPC,NPCX, NPCY)
+EndSub
+
+'Controlar Jogador
+Sub ControlPlayer
+  PlayerX = (GraphicsWindow.MouseX - CarroLargura/2)
+  If (PlayerX > (JanelaLargura/8) And PlayerX < (JanelaLargura/8*7 - CarroLargura)) Then
+      Shapes.Move(Player, PlayerX, PlayerY)
+  Else
+  EndIf
+EndSub
+
+'Controlar o NPC
+Sub ControlNPC
+  'Atualizar posição do NPC
+  Shapes.Move(NPC, NPCX, NPCY)
+  
+  'Calcular Colizões
+  If (NPCY + CarroAltura > PlayerY And NPCY < PlayerY + CarroAltura and NPCX  < PlayerX And NPCX + CarroLargura > PlayerX Or NPCY + CarroAltura > PlayerY And NPCY < PlayerY + CarroAltura And NPCY + CarroAltura > PlayerY And NPCX + CarroLargura > PlayerX And NPCX - CarroLargura < PlayerX) Then
+    'Se colizões forem válidas, parar o movimento de ambos
+  Else
+    'Se não há colizões, manter rota atual, seguindo a velocidade e direção
+    NPCX = (NPCX + Direcao)
+    NPCY = (NPCY + NPCSpeed)
+  EndIf
+  Program.Delay(1)
+  'Ao atingir o fim da tela, Remover o NPC e criar outro
+  If (NPCY > JanelaAltura) Then
+    SpawnNPC()
+  EndIf
+EndSub
+
+
+'Controlador Principal do jogo, onde todas as funções são chamadas
+ValoresReset()
+BackGround()
+SpawnNPC()
+
+'Estrutura de Repetição que chama as rotinas do jogo
+Loop:
+ControlPlayer()
+ControlNPC()
+Goto Loop
