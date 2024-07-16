@@ -3,8 +3,8 @@
 </h1>
 
 <br>
-<img src="assets/Prototype.png" height = "450">
-<img src="assets/Preview.png" height = "450">
+<img src="assets/Prototype.PNG" height = "450">
+<img src="assets/Preview.PNG" height = "450">
 
 <br><br>
 
@@ -22,8 +22,8 @@ Notas:
 Em breve com interface gráfica e arte repaginada, segue SpriteSheet:
 
  <p align="center">
-  <img src="assets/SpriteSheet 01.png" width="300" height="300">
-  <img src="assets/SpriteSheet 02.png" width="300" height="300">
+  <img src="assets/SpriteSheet 01.PNG" width="300" height="300">
+  <img src="assets/SpriteSheet 02.PNG" width="300" height="300">
 </p>
 
 ## 🚀 Linguagens
