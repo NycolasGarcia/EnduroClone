@@ -2,14 +2,27 @@
   Projeto Jogo Enduro
 </h1>
 
-<br>
-<img src="assets/Prototype.PNG" height = "450">
-<img src="assets/Preview.PNG" height = "450">
-
+<br> 
 <br><br>
 
+<table align= "center">
+  <tr>
+    <td>
+        <img src="assets/Prototype.PNG" height = "150" /><br>
+        <sub>
+          <b>Protótipo</b>
+        </sub>
+  </tr>
+   <tr>
+   <td>
+        <img src="assets/Preview.PNG" height = "150" /><br>
+        <sub>
+          <b>Expectativa</b>
+        </sub>
+  </tr>
+</table>
 
-## 📝 Descrição 
+  ## 📝 Descrição 
 
 Projeto pessoal, desenvolvimento de um jogo simples de corrida que aplique: 
 
